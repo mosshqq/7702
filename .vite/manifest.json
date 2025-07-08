@@ -1,0 +1,23 @@
+{
+  "index.html": {
+    "file": "static/index-BVr1jxyU.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "dynamicImports": [
+      "node_modules/viem/_esm/utils/ccip.js"
+    ],
+    "css": [
+      "static/index-D8b4DHJx.css"
+    ]
+  },
+  "node_modules/viem/_esm/utils/ccip.js": {
+    "file": "static/ccip-CtM3KS-I.js",
+    "name": "ccip",
+    "src": "node_modules/viem/_esm/utils/ccip.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
+  }
+}
