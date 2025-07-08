@@ -30,7 +30,7 @@ export const chain = defineChain({
     },
   },
   blockExplorers: {
-    default: { name: "Explorer", url: "https://explorer.zora.energy" },
+    default: { name: "Explorer", url: "https://evmtestnet-stage.confluxscan.net" },
   },
 });
 
