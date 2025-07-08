@@ -63,7 +63,7 @@ function App() {
             3. 如果tx sender 和
             eoa使用同一个账户，会出现nonce错误，没有进行处理，方便进行异常case测试
           </p>
-          <p>4. 如果chain id不为0/71，会出现chain id不匹配的报错，同2</p>
+          <p>4. 如果chain id不为0/71，会出现chain id不匹配的报错，同3</p>
           <p>
             5. delegate后，如果想要调用eoa的方法，可以去scan上通过delegated
             code页面进行调用，这里不额外提供
