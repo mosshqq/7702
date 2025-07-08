@@ -1,6 +1,6 @@
 {
   "index.html": {
-    "file": "static/index-BpZyRPeZ.js",
+    "file": "static/index-BHyhQdk3.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
@@ -8,11 +8,11 @@
       "node_modules/viem/_esm/utils/ccip.js"
     ],
     "css": [
-      "static/index-D8b4DHJx.css"
+      "static/index-C1BxAUSU.css"
     ]
   },
   "node_modules/viem/_esm/utils/ccip.js": {
-    "file": "static/ccip-BWkqbM19.js",
+    "file": "static/ccip-BWqxa1Z-.js",
     "name": "ccip",
     "src": "node_modules/viem/_esm/utils/ccip.js",
     "isDynamicEntry": true,
