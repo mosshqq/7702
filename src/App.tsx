@@ -1,8 +1,13 @@
 import "./App.css";
 import { useState } from "react";
 import { privateKeyToAccount } from "viem/accounts";
-import { createWalletClient, http } from "viem";
+import { createWalletClient, createPublicClient, http } from "viem";
 import { chain } from "./constants";
+
+const publicClient = createPublicClient({
+  chain,
+  transport: http(),
+});
 
 function App() {
   const [txSenderPK, setTxSenderPK] = useState<`0x${string}`>();
@@ -15,8 +20,9 @@ function App() {
       delegatedTo: `0x${string}` | "";
       chainId: number | `0x${string}` | 0;
       data: `0x${string}` | "";
+      nonce: number | undefined;
     }[]
-  >([{ eoaPK: "", delegatedTo: "", chainId: 0, data: "0x" }]);
+  >([{ eoaPK: "", delegatedTo: "", chainId: 0, data: "0x", nonce: undefined }]);
   const handleTxSenderPK = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTxSenderPK(e.target.value as `0x${string}`);
   };
@@ -59,6 +65,19 @@ function App() {
       })
     );
   };
+  const handleNonce = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    setAuthorizationList(
+      authorizationList.map((item, i) => {
+        if (i === index) {
+          return { ...item, nonce: Number(e.target.value) };
+        }
+        return item;
+      })
+    );
+  };
   const handleData = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData(e.target.value as `0x${string}`);
   };
@@ -84,6 +103,7 @@ function App() {
           contractAddress: item.delegatedTo as `0x${string}`,
           account: eoa,
           chainId: Number(item.chainId) || 0,
+          nonce: item.nonce || undefined,
         });
         return authorization;
       });
@@ -99,6 +119,20 @@ function App() {
     });
     setHash(hash);
     return hash;
+  };
+  const handleFetchNonce = async (index: number) => {
+    const eoaPK = authorizationList[index].eoaPK;
+    if (!eoaPK) {
+      alert("eoa pk is required");
+      return;
+    }
+    const eoa = privateKeyToAccount(eoaPK);
+    const nonce = await publicClient.getTransactionCount({
+      address: eoa.address,
+    });
+    setAuthorizationList(
+      authorizationList.map((item) => ({ ...item, nonce: nonce }))
+    );
   };
   return (
     <div className="App">
@@ -123,7 +157,14 @@ function App() {
             code页面进行调用，这里不额外提供
           </p>
           <p>
-            6. 一次授权多个时，如果eoa的pk相同，多次授权交易nonce会重复，导致只有其中一笔授权交易成功
+            6.
+            一次授权多个时，如果eoa的pk相同，多次授权交易nonce会重复，导致只有其中一笔授权交易成功
+          </p>
+          <p>
+            7. 当tx sender 和 eoa 相同，或者交易中 eoa 多次授权，会出现 nonce
+            重复报错；此时可以通过authorizationList里的【fetch
+            nonce】按钮查询eoa的最新nonce，手动填写nonce。填写nonce的规则为：如果tx
+            sender和eoa相同，eoa的nonce需要固定+1；如果eoa有多次授权，从第一次授权开始依次+1
           </p>
         </div>
       </div>
@@ -158,7 +199,13 @@ function App() {
             onClick={() =>
               setAuthorizationList([
                 ...authorizationList,
-                { eoaPK: "", delegatedTo: "", chainId: 0, data: "0x" },
+                {
+                  eoaPK: "",
+                  delegatedTo: "",
+                  chainId: 0,
+                  data: "0x",
+                  nonce: undefined,
+                },
               ])
             }
           >
@@ -202,6 +249,21 @@ function App() {
                   onChange={(e) => handleChainId(e, index)}
                   value={item.chainId}
                 />
+              </div>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <label>nonce(可选)</label>
+                <input
+                  style={{ flex: 1 }}
+                  type="number"
+                  onChange={(e) => handleNonce(e, index)}
+                  value={item.nonce}
+                />
+                <button
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleFetchNonce(index)}
+                >
+                  fetch nonce
+                </button>
               </div>
             </div>
           ))}
