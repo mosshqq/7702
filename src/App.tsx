@@ -254,7 +254,7 @@ function App() {
                 <label>nonce(可选)</label>
                 <input
                   style={{ flex: 1 }}
-                  type="number"
+                  type="text"
                   onChange={(e) => handleNonce(e, index)}
                   value={item.nonce}
                 />
