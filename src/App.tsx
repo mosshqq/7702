@@ -10,6 +10,7 @@ function App() {
   const [delegatedTo, setDelegatedTo] = useState<`0x${string}`>();
   const [chainId, setChainId] = useState<number>();
   const [hash, setHash] = useState<string>();
+  const [data, setData] = useState<`0x${string}`>();
   const handleTxSenderPK = (e: any) => {
     setTxSenderPK(e.target.value as `0x${string}`);
   };
@@ -43,9 +44,13 @@ function App() {
     const hash = await walletClient.sendTransaction({
       authorizationList: [authorization],
       to: eoa.address,
+      data: data,
     });
     setHash(hash);
     return hash;
+  };
+  const handleData = (e: any) => {
+    setData(e.target.value as `0x${string}`);
   };
   return (
     <div className="App">
@@ -67,6 +72,12 @@ function App() {
           <p>
             5. delegate后，如果想要调用eoa的方法，可以去scan上通过delegated
             code页面进行调用，这里不额外提供
+          </p>
+          <p>
+            6. 授权交易中from是tx sender，to 是eoa，因此如果delegated
+            to支持receive方法可以不传data当做普通转账交易发送；如果delegated
+            to不支持receive方法或希望调用delegated
+            to的某些合约方法，可以传入data在授权交易中直接执行
           </p>
         </div>
       </div>
@@ -92,6 +103,15 @@ function App() {
             type="number"
             onChange={handleChainId}
             defaultValue={0}
+          />
+        </div>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <label>data(可选)</label>
+          <input
+            style={{ flex: 1 }}
+            type="text"
+            onChange={handleData}
+            defaultValue={"0x"}
           />
         </div>
         <button onClick={delegate}>delegate</button>
