@@ -1,6 +1,6 @@
 {
   "index.html": {
-    "file": "static/index-BJ9VL3wo.js",
+    "file": "static/index-DGQqmPt7.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
@@ -12,7 +12,7 @@
     ]
   },
   "node_modules/viem/_esm/utils/ccip.js": {
-    "file": "static/ccip-DJWzNSsB.js",
+    "file": "static/ccip-XJo6yxKI.js",
     "name": "ccip",
     "src": "node_modules/viem/_esm/utils/ccip.js",
     "isDynamicEntry": true,
