@@ -58,7 +58,7 @@ function App() {
         <h1>TIPS</h1>
         <div>
           <p style={{ color: "red" }}>
-            1. pk字段需要填写私钥，项目不保存，但是为了安全请使用测试账户的私钥
+            1. pk字段需要填写私钥（0x开头），项目不保存，但是为了安全请使用测试账户的私钥
           </p>
           <p>
             2. delegate 后如果希望eoa仍然可以被转账，需要delegated
