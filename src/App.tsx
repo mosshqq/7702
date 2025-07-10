@@ -2,7 +2,7 @@ import "./App.css";
 import { useState } from "react";
 import { privateKeyToAccount } from "viem/accounts";
 import { createWalletClient, createPublicClient, http } from "viem";
-import { chain } from "./constants";
+import { chain, chainId } from "./constants";
 
 const publicClient = createPublicClient({
   chain,
@@ -136,6 +136,16 @@ function App() {
   };
   return (
     <div className="App">
+      <select
+        onChange={(e) => {
+          localStorage.setItem("_7702_chainId", e.target.value);
+          window.location.reload();
+        }}
+        defaultValue={chainId}
+      >
+        <option value="71">71</option>
+        <option value="8889">8889</option>
+      </select>
       <div>
         <h1>TIPS</h1>
         <div>
